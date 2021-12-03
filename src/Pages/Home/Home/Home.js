@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import useProducts from '../../../Context/UseProducts/UseProducts';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const Home = () => {
     const [products]=useProducts();
+    const [visible,setVisible]=useState(12);
+    const showMoreItems=()=>{
+        setVisible((prevValue)=>prevValue+12);
+    }
     return (
         <Container>
             <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600, margin:'auto', marginTop:'20px',marginBottom:'20px' }}>
@@ -36,8 +40,8 @@ const Home = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products?.docs?.slice(0,12).map((product) => (
-                            <TableRow key={product._id}>
+                        {products?.docs?.slice(0,visible).map((product) => (
+                        <TableRow key={product._id}>
                             <TableCell component="th" scope="row">
                                 {product.name.en}
                             </TableCell>
@@ -46,11 +50,12 @@ const Home = () => {
                             <TableCell>{product.rating}</TableCell>
                             <TableCell>{product.specialPrice}</TableCell>
                             <TableCell>{product.price}</TableCell>
-                            </TableRow>
+                        </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Button variant="contained" sx={{marginTop:'25px'}} onClick={showMoreItems}>Load More</Button>
         </Container>
     );
 };

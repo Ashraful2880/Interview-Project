@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 const useProducts = () => {
     const [products, setProducts] = useState([]);
     const [loading,setLoading]=useState(false);
-
-
+    
     useEffect(() => {
         setLoading(true);
         fetch('https://staging-backend.esyms-api.com/esyms/website/product/front-condition?categoryId=&name=%20')

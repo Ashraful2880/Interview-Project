@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,11 +8,35 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import useProducts from '../../Context/UseProducts/UseProducts';
-import { Container } from '@mui/material';
+import {Container} from '@mui/material';
+import ReactPaginate from 'react-paginate';
+import './Products.css';
 
 const Products = () => {
     const [products, loading, setLoading]=useProducts();
-        console.log(products.docs);
+    const [pageNumber,setPageNumber]=useState(0);
+
+    const productsPerPage=10;
+    const pagesVisited=pageNumber*productsPerPage;
+
+    const displayProducts=products?.docs?.slice(pagesVisited, pagesVisited+productsPerPage)
+        .map((product) => (
+            <TableRow key={product._id}>
+            <TableCell component="th" scope="row">
+                {product.name.en}
+            </TableCell>
+            <TableCell>{product.brand}</TableCell>
+            <TableCell>{product.age}</TableCell>
+            <TableCell>{product.rating}</TableCell>
+            <TableCell>{product.specialPrice}</TableCell>
+            <TableCell>{product.price}</TableCell>
+            </TableRow>
+        ))
+
+        const pageCount=Math.ceil(products?.docs?.length/productsPerPage);
+        const changePage=({selected})=>{
+            setPageNumber(selected)
+        };
     return (
         <Container>
             {loading ? <p> Loading...</p>: setLoading(false)}
@@ -29,21 +54,21 @@ const Products = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products?.docs?.map((product) => (
-                            <TableRow key={product._id}>
-                            <TableCell component="th" scope="row">
-                                {product.name.en}
-                            </TableCell>
-                            <TableCell>{product.brand}</TableCell>
-                            <TableCell>{product.age}</TableCell>
-                            <TableCell>{product.rating}</TableCell>
-                            <TableCell>{product.specialPrice}</TableCell>
-                            <TableCell>{product.price}</TableCell>
-                            </TableRow>
-                        ))}
+                    {displayProducts}                       
                     </TableBody>
                 </Table>
             </TableContainer>
+            <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                pageCount={pageCount}
+                onPageChange={changePage}
+                containerClassName={"paginationBttns"}
+                previousLinkClassName={"previousBttn"}
+                nextLinkClassName={"nextBttn"}
+                disabledClassName={"paginationDisabled"}
+                activeClassName={"paginationActive"}
+            />
         </Container>
     );
 };
