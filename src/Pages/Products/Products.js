@@ -13,7 +13,7 @@ import ReactPaginate from 'react-paginate';
 import './Products.css';
 
 const Products = () => {
-    const [products, loading, setLoading]=useProducts();
+    const [products]=useProducts();
     const [pageNumber,setPageNumber]=useState(0);
 
     const productsPerPage=10;
@@ -32,15 +32,13 @@ const Products = () => {
             <TableCell>{product.price}</TableCell>
             </TableRow>
         ))
-
         const pageCount=Math.ceil(products?.docs?.length/productsPerPage);
         const changePage=({selected})=>{
             setPageNumber(selected)
         };
     return (
         <Container>
-            {loading ? <p> Loading...</p>: setLoading(false)}
-            <h1>Our All Products</h1>
+            <h1>Our Products</h1>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>

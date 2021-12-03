@@ -2,28 +2,31 @@ import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import useProducts from '../../../Context/UseProducts/UseProducts';
+import useProducts from '../../Context/UseProducts/UseProducts';
 import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const Home = () => {
     const [products]=useProducts();
-    const [visible,setVisible]=useState(12);
+    const [visible,setVisible]=useState(10);
+    const [search,setSearch]=useState("");
+
     const showMoreItems=()=>{
-        setVisible((prevValue)=>prevValue+12);
+        setVisible((prevValue)=>prevValue+10);
+    }
+    const handleChange=event=>{
+        setSearch(event.target.value);
+        console.log(search);
     }
     return (
         <Container>
-            <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600, margin:'auto', marginTop:'20px',marginBottom:'20px' }}>
+            <Paper component="form" 
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 600, margin:'auto', marginTop:'20px',marginBottom:'20px' }}>
                 {<InputBase
                     sx={{ ml: 1, flex: 1 }}
                     placeholder="Search Products"
+                    onChange={handleChange}
                     inputProps={{ 'aria-label': 'Search Products' }}
                 />}
-                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                    <SearchIcon />
-                </IconButton>
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             </Paper>            
            
